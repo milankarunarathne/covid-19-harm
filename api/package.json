@@ -1,0 +1,14 @@
+{
+  "name": "covid-19_api",
+  "version": "1.0.0",
+  "description": "API for COVID-19 Statistics based on Sri Lanka",
+  "author": "MilanKarunarathne",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "express": "~4.16.0"
+  }
+}
