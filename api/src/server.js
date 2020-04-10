@@ -5,6 +5,8 @@ const cors = require('cors')
 const MongoClient = require('mongodb').MongoClient
 const cfg = require('../config')
 
+const { statisticsRouter } = require('./routes/statistics')
+
 const app = express()
 
 MongoClient.connect(cfg.dbURI, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
@@ -14,8 +16,10 @@ MongoClient.connect(cfg.dbURI, { useNewUrlParser: true, useUnifiedTopology: true
 
 app.use(cors())
 app.use(logger('dev'))
-app.use(express.json({ limit: '10mb' }))
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
+app.use(express.json())
+app.use(bodyParser.json({ limit: '2mb' }))
+app.use(bodyParser.urlencoded({ limit: '2mb', extended: false }))
+
+app.use('/statistics', statisticsRouter)
 
 module.exports = app
-
