@@ -9,4 +9,10 @@ router.post('/create', async (req, res, next) => {
   res.status(result.status).send(result.body)
 })
 
+router.delete('/remove/:statisticsId', async (req, res, next) => {
+  const statisticsService = new StatisticsService(req.app.locals.db)
+  const result = await statisticsService.removeStatistics(req.params.statisticsId)
+  res.status(result.status).send(result.body)
+})
+
 module.exports = { statisticsRouter: router }

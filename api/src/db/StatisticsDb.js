@@ -1,5 +1,6 @@
+const _ = require('lodash')
+const ObjectID = require('mongodb').ObjectID
 const constants = require('../constants')
-// const ObjectID = require('mongodb').ObjectID
 
 class StatisticsDb {
   constructor(dbConn) {
@@ -19,6 +20,16 @@ class StatisticsDb {
       if (e.code != '11000') {
         throw e
       }
+    }
+    return null
+  }
+
+  async removeDailyStatistic(id) {
+    const result = await this.__dbConn.collection(constants.COLLECTION_NAMES.DAILYSTATS)
+      .deleteOne({ _id: ObjectID(id) })
+
+    if (result) {
+      return _.get(result, 'deletedCount', 0)
     }
     return null
   }
