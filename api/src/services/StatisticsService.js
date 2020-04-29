@@ -34,11 +34,51 @@ class StatisticsService {
     }
   }
 
+  async getLatestStatistics() {
+    try {
+      const result = await this.__statisticsDb.getLatestDailyStatistic()
+      // console.log(result)
+      const dataResult = result[0]
+      const generatedResult = {
+        success: true,
+        message: 'Success',
+        data: {
+          update_date_time: _.get(dataResult, 'update_date_time'),
+          local_new_cases: _.get(dataResult, 'local_new_cases'),
+          local_total_cases: _.get(dataResult, 'local_total_cases'),
+          local_total_number_of_individuals_in_hospitals: _.get(dataResult, 'local_total_number_of_individuals_in_hospitals'),
+          local_deaths: _.get(dataResult, 'local_deaths'),
+          local_new_deaths: _.get(dataResult, 'local_new_deaths'),
+          local_recovered: _.get(dataResult, 'local_recovered'),
+          local_active_cases: _.get(dataResult, 'local_total_cases') - (_.get(dataResult, 'local_deaths') + _.get(dataResult, 'local_recovered')),
+          global_new_cases: _.get(dataResult, 'global_new_cases'),
+          global_total_cases: _.get(dataResult, 'global_total_cases'),
+          global_deaths: _.get(dataResult, 'global_deaths'),
+          global_new_deaths: _.get(dataResult, 'global_new_deaths'),
+          global_recovered: _.get(dataResult, 'global_recovered'),
+          global_active_cases: _.get(dataResult, 'global_total_cases') - (_.get(dataResult, 'global_deaths') + _.get(dataResult, 'global_recovered'))
+        }
+      }
+
+      return {
+        status: constants.HTTP_STATUS_CODES.OK,
+        body: generatedResult
+      }
+
+    } catch (e) {
+      console.error(e.message)
+      return {
+        status: constants.HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
+        body: 'Internal Server Error'
+      }
+    }
+  }
+
   async removeStatistics(id) {
     if (!ObjectID.isValid(id)) {
       return {
         status: constants.HTTP_STATUS_CODES.BAD_REQUEST,
-        body: 'Required ID is wrong'
+        body: 'Required ID is Wrong'
       }
     }
 

@@ -9,6 +9,12 @@ router.post('/create', async (req, res, next) => {
   res.status(result.status).send(result.body)
 })
 
+router.get('/get-current-statistical', async (req, res, next) => {
+  const statisticsService = new StatisticsService(req.app.locals.db)
+  const result = await statisticsService.getLatestStatistics()
+  res.status(result.status).send(result.body)
+})
+
 router.delete('/remove/:statisticsId', async (req, res, next) => {
   const statisticsService = new StatisticsService(req.app.locals.db)
   const result = await statisticsService.removeStatistics(req.params.statisticsId)

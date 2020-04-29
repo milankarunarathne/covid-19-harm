@@ -24,6 +24,16 @@ class StatisticsDb {
     return null
   }
 
+  async getLatestDailyStatistic() {
+    const result = await this.__dbConn.collection(constants.COLLECTION_NAMES.DAILYSTATS)
+      .find().sort({'update_date_time': -1}).limit(1).toArray()
+
+      if (result) {
+        return result
+      }
+      return null
+  }
+
   async removeDailyStatistic(id) {
     const result = await this.__dbConn.collection(constants.COLLECTION_NAMES.DAILYSTATS)
       .deleteOne({ _id: ObjectID(id) })
@@ -33,6 +43,7 @@ class StatisticsDb {
     }
     return null
   }
+  
 }
 
 module.exports = StatisticsDb
